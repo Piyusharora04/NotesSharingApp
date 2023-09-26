@@ -1,8 +1,10 @@
 package com.example.notessharingapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notessharingapp.databinding.LoginActivityBinding
 
@@ -27,9 +29,9 @@ class LoginActivity : AppCompatActivity() {
 
         // creating handler for other layouts
 
-        val handler = Handler()
+        var handler = Handler()
 
-        val runnable = Runnable {
+        var runnable = Runnable {
             // set fade in animation for other layouts
 
             binding.textView1.animation = fadeIn
@@ -41,6 +43,13 @@ class LoginActivity : AppCompatActivity() {
         }
 
         handler.postDelayed(runnable, 1000)
+
+        val register = findViewById<LinearLayout>(R.id.newUserSignUp)
+
+        register.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
