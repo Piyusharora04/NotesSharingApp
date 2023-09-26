@@ -52,6 +52,9 @@ dependencies {
     // for animation using lottie
     implementation("com.airbnb.android:lottie:6.1.0")
 
+    // duo navigation view
+    implementation("nl.psdcompany:duo-navigation-drawer:3.0.0")
+
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     testImplementation("junit:junit:4.13.2")
