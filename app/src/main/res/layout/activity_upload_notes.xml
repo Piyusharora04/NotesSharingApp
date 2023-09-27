@@ -37,6 +37,8 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Select PDF File"
+        app:backgroundTint="@null"
+        android:background="@drawable/login_background"
         android:layout_centerHorizontal="true"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
@@ -59,7 +61,9 @@
         android:id="@+id/btnSelectImage1"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Select Image 1"
+        android:text="Select Image"
+        app:backgroundTint="@null"
+        android:background="@drawable/login_background"
         android:layout_below="@id/btnSelectPdf"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
@@ -68,10 +72,10 @@
         android:layout_marginTop="16dp"/>
 
     <TextView
-        android:id="@+id/uploadSSTV"
+        android:id="@+id/addUPI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload UPI QR Code"
+        android:text="UPI I.D."
         app:layout_constraintTop_toBottomOf="@id/btnSelectImage1"
         android:layout_margin="16dp"
         android:layout_marginStart="20dp"
@@ -79,24 +83,22 @@
         android:textSize="20sp"/>
 
     <!-- Second Image File Upload Section -->
-    <Button
-        android:id="@+id/btnSelectImage2"
-        android:layout_width="150dp"
+    <EditText
+        android:id="@+id/UPIid"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Image 2"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="20dp"
-        android:layout_below="@id/btnSelectImage1"
-        app:layout_constraintTop_toBottomOf="@id/uploadSSTV"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintTop_toBottomOf="@id/addUPI"
+        android:hint="Add UPI I.D."
+        android:layout_margin="20dp"/>
+
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Description"
-        app:layout_constraintTop_toBottomOf="@id/btnSelectImage2"
+        app:layout_constraintTop_toBottomOf="@id/UPIid"
         android:layout_margin="16dp"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,23 +107,45 @@
     <EditText
         android:id="@+id/descriptionEditText"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:layout_constraintTop_toBottomOf="@id/description"
         android:hint="Add Description"/>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        app:layout_constraintTop_toBottomOf="@id/descriptionEditText"
+        android:layout_margin="16dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintTop_toBottomOf="@id/amount"
+        android:hint="Add Amount"/>
 
     <!-- Upload All Button -->
     <Button
         android:id="@+id/btnUploadAll"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Upload All"
-        android:layout_below="@id/btnSelectImage2"
+        android:text="Upload"
+        android:textSize="25sp"
+        app:backgroundTint="@null"
+        android:background="@drawable/login_background"
+        android:layout_below="@id/descriptionEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

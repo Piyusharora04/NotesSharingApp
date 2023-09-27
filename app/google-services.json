@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "832892844642",
-    "project_id": "fir-demo-19bf0",
-    "storage_bucket": "fir-demo-19bf0.appspot.com"
+    "project_number": "280704276222",
+    "project_id": "prog-o-thon-app",
+    "storage_bucket": "prog-o-thon-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:832892844642:android:04cbb56811a8f6eb8f6f3b",
+        "mobilesdk_app_id": "1:280704276222:android:94b206a6d881da143137af",
         "android_client_info": {
-          "package_name": "com.example.lecture5firebase"
+          "package_name": "com.example.notessharingapp"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "832892844642-riugngbjijghphpv6rqi1o7o13vjd532.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAK9cjPo5GveAu-axNmecNVV6VrUmYue8w"
+          "current_key": "AIzaSyDbuqW5Y_EP3CvjfLq0w7DdAs6kzns9HRM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "832892844642-riugngbjijghphpv6rqi1o7o13vjd532.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
