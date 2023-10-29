@@ -176,6 +176,7 @@
                     app:tint="@color/primary1"/>
 
                 <TextView
+                    android:id="@+id/log_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
@@ -218,6 +219,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/quit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -277,7 +279,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
                         android:textColor="@color/black"
-                        android:text="Your Products"
+                        android:text="Your Notes"
                         android:textStyle="normal"/>
 
                 </LinearLayout>
@@ -289,6 +291,7 @@
                     app:cardElevation="10dp">
 
                     <ImageView
+                        android:id="@+id/profile_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="fitXY"
@@ -517,7 +520,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/add_icon"
-            app:tint="@color/white"
+            app:tint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

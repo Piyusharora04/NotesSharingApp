@@ -60,55 +60,62 @@ class LoginActivity : AppCompatActivity() {
         val logInButton: AppCompatButton = findViewById(R.id.LogIn)
 //        val progressBar: ProgressBar = findViewById(R.id.progressBar)
 //        val signUpButton:LinearLayout = findViewById(R.id.newUserSignUp)
-//
-//        var emailTextLogin = emailLogin.text.toString()
-//        var passwordTextLogin = passwordLogin.text.toString()
-//
-//        var auth = FirebaseAuth.getInstance()
-//
-//        val intent = Intent(this, new_profile::class.java)
-//
-//        logInButton.setOnClickListener {
-//            auth = FirebaseAuth.getInstance()
-//            emailTextLogin = emailLogin.text.toString()
-//            passwordTextLogin = passwordLogin.text.toString()
-//
-//            if (TextUtils.isEmpty(emailTextLogin) || TextUtils.isEmpty(passwordTextLogin)){
-//                Toast.makeText(this, "Field can not be empty", Toast.LENGTH_SHORT).show()
-//                return@setOnClickListener
-//            }
-//
-////            progressBar.visibility = View.VISIBLE
-//
-//            auth.signInWithEmailAndPassword(emailTextLogin, passwordTextLogin)
-//                .addOnCompleteListener{
-//                    if(it.isSuccessful){
-//                        if(Firebase.auth.currentUser?.isEmailVerified!!) {
-//                            Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT)
-//                                .show()
-//                            startActivity(intent)
-////                                progressBar.visibility = View.GONE
-//                            finish()
-//                        }else{
-//                            Toast.makeText(this, "Please verify your email to continue.", Toast.LENGTH_SHORT).show()
-//                        }
-//                    } else{
-//                        Toast.makeText(this, "Some error occurred" + it.exception?.message, Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//        }
-//
-//        forgotPassword.setOnClickListener{
-//            if(emailTextLogin == "") {
-//                Toast.makeText(this, "Please enter email address...", Toast.LENGTH_SHORT).show()
-//            }else{
-//                auth.sendPasswordResetEmail(emailTextLogin)
-//            }
-//        }
+
+        var emailTextLogin = emailLogin.text.toString()
+        var passwordTextLogin = passwordLogin.text.toString()
+
+        var auth = FirebaseAuth.getInstance()
+
+        val intent = Intent(this, new_profile::class.java)
+
+        if (auth.currentUser != null) {
+            // User is signed out.
+            // Redirect to the login screen or update UI.
+            val intent = Intent(this, new_profile::class.java)
+            startActivity(intent)
+        }
+
+        logInButton.setOnClickListener {
+            auth = FirebaseAuth.getInstance()
+            emailTextLogin = emailLogin.text.toString()
+            passwordTextLogin = passwordLogin.text.toString()
+
+            if (TextUtils.isEmpty(emailTextLogin) || TextUtils.isEmpty(passwordTextLogin)){
+                Toast.makeText(this, "Field can not be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+//            progressBar.visibility = View.VISIBLE
+
+            auth.signInWithEmailAndPassword(emailTextLogin, passwordTextLogin)
+                .addOnCompleteListener{
+                    if(it.isSuccessful){
+                        if(Firebase.auth.currentUser?.isEmailVerified!!) {
+                            Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT)
+                                .show()
+                            startActivity(Intent(applicationContext,new_profile::class.java))
+//                                progressBar.visibility = View.GONE
+                            finish()
+                        }else{
+                            Toast.makeText(this, "Please verify your email to continue.", Toast.LENGTH_SHORT).show()
+                        }
+                    } else{
+                        Toast.makeText(this, "Some error occurred" + it.exception?.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+
+        forgotPassword.setOnClickListener{
+            if(emailTextLogin == "") {
+                Toast.makeText(this, "Please enter email address...", Toast.LENGTH_SHORT).show()
+            }else{
+                auth.sendPasswordResetEmail(emailTextLogin)
+            }
+        }
 
         register.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            val registerintent = Intent(this, SignUpActivity::class.java)
+            startActivity(registerintent)
         }
 
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,9 +24,9 @@
         android:id="@+id/uploadPDFTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload PDF"
+        android:text="PDF"
         app:layout_constraintTop_toBottomOf="@id/heading"
-        android:layout_margin="16dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,43 +41,66 @@
         app:backgroundTint="@null"
         android:background="@drawable/login_background"
         android:layout_centerHorizontal="true"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/uploadPDFTV"
+        app:layout_constraintBottom_toBottomOf="@id/uploadPDFTV"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/uploadPDFTV"/>
+        app:layout_constraintTop_toTopOf="@id/uploadPDFTV"/>
 
     <TextView
         android:id="@+id/uploadImageTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload Sample Image"
+        android:text="Sample Image"
         app:layout_constraintTop_toBottomOf="@id/btnSelectPdf"
-        android:layout_margin="16dp"
+        android:layout_marginTop="25dp"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="20sp" />
 
     <!-- First Image File Upload Section -->
     <Button
-        android:id="@+id/btnSelectImage1"
+        android:id="@+id/btnSelectImage"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Select Image"
         app:backgroundTint="@null"
         android:background="@drawable/login_background"
         android:layout_below="@id/btnSelectPdf"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/uploadImageTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/uploadImageTV"
+        app:layout_constraintBottom_toBottomOf="@id/uploadImageTV"
         android:layout_marginStart="20dp"
-        app:layout_constraintTop_toBottomOf="@id/uploadImageTV"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/note_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note Name"
+        app:layout_constraintTop_toBottomOf="@id/uploadImageTV"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/note_name"
+        android:hint="Add Name"/>
 
     <TextView
         android:id="@+id/addUPI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UPI I.D."
-        app:layout_constraintTop_toBottomOf="@id/btnSelectImage1"
+        app:layout_constraintTop_toBottomOf="@id/nameEditText"
         android:layout_margin="16dp"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,27 +114,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addUPI"
         android:hint="Add UPI I.D."
-        android:layout_margin="20dp"/>
+        android:layout_margin="16dp"/>
 
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        app:layout_constraintTop_toBottomOf="@id/UPIid"
-        android:layout_margin="16dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="20sp"/>
-
-    <EditText
-        android:id="@+id/descriptionEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:layout_constraintTop_toBottomOf="@id/description"
-        android:hint="Add Description"/>
 
     <TextView
         android:id="@+id/amount"
@@ -127,9 +132,30 @@
         android:id="@+id/amountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="16dp"
+        android:inputType="number"
         app:layout_constraintTop_toBottomOf="@id/amount"
         android:hint="Add Amount"/>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        app:layout_constraintTop_toBottomOf="@id/UPIid"
+        android:layout_margin="16dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        android:hint="Add Description"/>
+
 
     <!-- Upload All Button -->
     <Button
@@ -140,7 +166,6 @@
         android:textSize="25sp"
         app:backgroundTint="@null"
         android:background="@drawable/login_background"
-        android:layout_below="@id/descriptionEditText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
