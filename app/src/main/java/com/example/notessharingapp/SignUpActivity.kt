@@ -108,16 +108,17 @@ class SignUpActivity : AppCompatActivity() {
                 .addOnCompleteListener{task ->              // This is a type of lambda function where we can define our own variable for use or we can use 'it' keyword.
                     if(task.isSuccessful){
                         Toast.makeText(this, "Registered Successfully..", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
+                        val loginIntent = Intent(this, LoginActivity::class.java)
+                        startActivity(loginIntent)
+                        finish()
                         auth.currentUser?.sendEmailVerification()
                             ?.addOnCompleteListener{
                                 Toast.makeText(this, "Verification Email Sent...", Toast.LENGTH_LONG).show()
                                 Toast.makeText(this, "Please verify to login..", Toast.LENGTH_LONG).show()
-                                val intent = Intent(this, LoginActivity::class.java)
-                                startActivity(intent)
+//                                val intent = Intent(this, LoginActivity::class.java)
+//                                startActivity(intent)
 //                                progressbar.visibility = View.GONE
-                                finish()
+//                                finish()
                             }
 
 //                        auth.currentUser?.sendEmailVerification()

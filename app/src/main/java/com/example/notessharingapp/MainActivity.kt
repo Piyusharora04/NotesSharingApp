@@ -1,16 +1,14 @@
 package com.example.notessharingapp
 
 import android.content.Intent
-import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.notessharingapp.databinding.ActivityMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.FirebaseApp
@@ -19,17 +17,33 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.util.ArrayList
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 //    private var isBlackTint = false
 //    private lateinit var fav: ImageView
     private lateinit var noteAdapter : NoteAdapter
+    private lateinit var adapter : NoteAdapter
     private lateinit var binding: ActivityMainBinding
+    private lateinit var searchView: SearchView
+//    private lateinit var tempList : List<NoteData>
+
+//    private lateinit var verified_check : String
+//    private lateinit var mainList : ArrayList<NoteData>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        noteAdapter= NoteAdapter()
+
+//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewHome)
+        binding.recyclerViewHome.apply {
+            adapter=noteAdapter
+            layoutManager=LinearLayoutManager(this@MainActivity)
+        }
 
         val newNote : FloatingActionButton = findViewById(R.id.newNote)
 
@@ -46,8 +60,8 @@ class MainActivity : AppCompatActivity() {
 
         logOut.setOnClickListener{
             auth.signOut()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val logOutIntent = Intent(this, LoginActivity::class.java)
+            startActivity(logOutIntent)
             finish()
         }
 
@@ -57,30 +71,15 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-//        fav = findViewById(R.id.favourites)
-//        var isBlackTint = false
-//
-//        fav.setOnClickListener {
-//            toggleTint()
-//        }
 
-        noteAdapter= NoteAdapter()
-
-//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewHome)
-        binding.recyclerViewHome.apply {
-            adapter=noteAdapter
-            layoutManager=LinearLayoutManager(this@MainActivity)
-        }
-
-//        val display_image : ImageView = findViewById(R.id.display_image)
-
-        val name_profile = intent.getStringExtra("keyVariableValue1").toString()
-        val contact_profile = intent.getStringExtra("keyVariableValue2").toString()
+        val name_profile = intent.getStringExtra("user_name").toString()
+        val contact_profile = intent.getStringExtra("user_contact").toString()
+        val field_profile = intent.getStringExtra("user_filed").toString()
 //        val field_profile = intent.getStringExtra("keyVariableValue3").toString()
 
+        // for setting the profile info on the navigation drawer in main activity.
         profile_name.text = name_profile
         profile_contact.text = contact_profile
-//        profile_field.text = field_profile
 
         retrieveDataFromFirebase()
 
@@ -90,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Profile::class.java)
             intent.putExtra("profile_name", name_profile)
             intent.putExtra("profile_contact", contact_profile)
-//            intent.putExtra("profile_field", field_profile)
+            intent.putExtra("profile_field", field_profile)
 //            Log.d("profile",field_profile.toString())
             startActivity(intent)
         }
@@ -99,17 +98,11 @@ class MainActivity : AppCompatActivity() {
         val amount = intent.getStringExtra("userAmount").toString()
         val description = intent.getStringExtra("userDes").toString()
 
-//        val image : ImageView = findViewById(R.id.display_image)
-//        image.setOnClickListener {
-//            val intent = Intent(this, PurchasePreview::class.java)
-//            intent.putExtra("userName", name_profile)
-//            intent.putExtra("userContact", contact_profile)
-//            intent.putExtra("userUPIid", upiID)
-//            intent.putExtra("userAmount", amount)
-//            intent.putExtra("userDescription", description)
-//            startActivity(intent)
-//
-//        }
+        val intent = Intent(this,PurchasePreview::class.java)
+        intent.putExtra("dex", description)
+
+
+
 
     }
 
@@ -118,14 +111,12 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
 
         val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.reference.child("data")
+        val databaseReference = database.reference.child("New Data")
 
-//        val display_image : ImageView = findViewById(R.id.display_image)
-//        val display_amount : TextView = findViewById(R.id.amount)
 
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d("debug", " haha ")
+                Log.d("debug_check", " haha ")
                 if (dataSnapshot.exists()) {
                     val dataList = dataSnapshot.children
                     val listData = mutableListOf<NoteData>()
@@ -138,11 +129,15 @@ class MainActivity : AppCompatActivity() {
                             j.get("img").toString(),
                             j.get("upiID").toString(),
                             j.get("description").toString(),
-                            j.get("amount").toString()
+                            j.get("amount").toString(),
+                            j.get("purchased").toString(),
+                            j.get("verified").toString()
                         )
                         listData.add(k)
                     }
+
                     noteAdapter.setData(listData)
+
 //                    val myDataFromDatabase = dataSnapshot.getValue(MainHomeView::class.java)
 //                    if (myDataFromDatabase != null) {
 //                        // Handle the retrieved data
@@ -157,5 +152,7 @@ class MainActivity : AppCompatActivity() {
                 println("Failed to read value from Firebase: ${databaseError.toException()}")
             }
         })
+
+//        Log.d("test_upload", )
     }
 }

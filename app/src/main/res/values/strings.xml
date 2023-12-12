@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">NoteMart</string>
-    <string name="select">Choose Level</string>
+    <string name="selectLevel">Choose Level</string>
+    <string name="selectPosition">Choose Status</string>
 
     <string-array name="level_of_fields">
         <item>Beginner</item>

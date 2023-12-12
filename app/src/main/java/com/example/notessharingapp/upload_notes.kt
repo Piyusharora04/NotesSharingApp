@@ -10,10 +10,15 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.notessharingapp.ExpertEventBus.UploadAmount
+import com.example.notessharingapp.ExpertEventBus.UploadImage
+import com.example.notessharingapp.ExpertEventBus.UploadNoteName
+import com.example.notessharingapp.ExpertEventBus.UploadPDF
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import org.greenrobot.eventbus.EventBus
 
 class upload_notes : AppCompatActivity() {
 
@@ -43,7 +48,7 @@ class upload_notes : AppCompatActivity() {
         val uploadPDF: Button = findViewById(R.id.btnSelectPdf)
         val uploadImage: Button = findViewById(R.id.btnSelectImage)
         val uploadAll: Button = findViewById(R.id.btnUploadAll)
-        val upiID:EditText = findViewById(R.id.UPIid)
+        val upiId:EditText = findViewById(R.id.UPIid)
         val description:EditText = findViewById(R.id.descriptionEditText)
         val amount:EditText = findViewById(R.id.amountEditText)
         val name:EditText = findViewById(R.id.nameEditText)
@@ -55,7 +60,6 @@ class upload_notes : AppCompatActivity() {
 
         uploadPDF.setOnClickListener {
             openFileChooser()
-
         }
 
         uploadImage.setOnClickListener {
@@ -67,18 +71,40 @@ class upload_notes : AppCompatActivity() {
                 name = name.text.toString(),
                 img = donldUrlImg,
                 pdf = donldUrlPDF,
-                upiID = upiID.text.toString(),
+                upiID = upiId.text.toString(),
                 description = description.text.toString(),
-                amount = amount.text.toString()
+                amount = amount.text.toString(),
+                purchased = "0",
+                verified = ""
+
             )
 
+//            Log.d("newdata", "${name.text.toString()}")
+//            Log.d("newdata", "${amount.text.toString()}")
+//            Log.d("newdata", "$donldUrlPDF")
+//            Log.d("newdata", "$donldUrlImg")
+
+
             val sharedPref = getSharedPreferences("Piyush", Context.MODE_PRIVATE)
-// Set the value of the object under a specific child node
-            databaseReference.child("data").child(sharedPref.getString("username","").toString() + System.currentTimeMillis().toString()).setValue(myData)
+            // Set the value of the object under a specific child node
+//            databaseReference.child("data2").child(sharedPref.getString("username","").toString() + " " + System.currentTimeMillis().toString()).setValue(myData)
+            databaseReference.child("data2").child(name.text.toString()).setValue(myData)
+
+
+            // Sending data to the expert for verification
+//            val noteNameEvent = UploadNoteName("${name.text}")
+//            val pdfNameEvent = UploadPDF("$donldUrlPDF")
+//            val imageEvent = UploadImage("$donldUrlImg")
+//            val amountEvent = UploadAmount("${amount.text}")
+//
+//            EventBus.getDefault().post(noteNameEvent)
+//            EventBus.getDefault().post(pdfNameEvent)
+//            EventBus.getDefault().post(imageEvent)
+//            EventBus.getDefault().post(amountEvent)
 
 
             val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("userUPI",upiID.text.toString())
+            intent.putExtra("userUPI",upiId.text.toString())
             intent.putExtra("userAmount",amount.text.toString())
             intent.putExtra("userDes",description.text.toString())
             startActivity(intent)
@@ -102,19 +128,69 @@ class upload_notes : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_PDF_REQUEST_CODE && requestCode == PICK_IMG_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // Handle the selected PDF file
-            selectedFileUri = data?.data ?: return
-            Log.i("debug", selectedFileUri.toString())
+//        if (requestCode == PICK_PDF_REQUEST_CODE && requestCode == PICK_IMG_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//            // Handle the selected PDF file
+//            selectedFileUri = data?.data ?: return
+//            Log.d("debug", selectedFileUri.toString())
+//
+//            selectedImgUri = data?.data ?: return
+//            Log.d("debug", selectedImgUri.toString())
+//
+//            // Upload the selected image to Firebase Storage
+//            uploadImageToFirebaseStorage(selectedImgUri)
+//
+//            // Upload the selected PDF file to Firebase Storage
+//            uploadPdfToFirebaseStorage(selectedFileUri)
+//        }
 
-            selectedImgUri = data?.data ?: return
-            Log.i("debug", selectedImgUri.toString())
+//        if (resultCode == Activity.RESULT_OK) {
+//            if (requestCode == PICK_PDF_REQUEST_CODE) {
+//                // Handle the selected PDF file
+//                selectedFileUri = data?.data ?: return
+//                Log.d("debug", "Selected PDF: ${selectedFileUri.toString()}")
+//
+//                // Upload the selected PDF file to Firebase Storage
+//                uploadPdfToFirebaseStorage(selectedFileUri)
+//            } else if (requestCode == PICK_IMG_REQUEST_CODE) {
+//                // Handle the selected image
+//                selectedImgUri = data?.data ?: return
+//                Log.d("debug", "Selected Image: ${selectedImgUri.toString()}")
+//
+//                // Upload the selected image to Firebase Storage
+//                uploadImageToFirebaseStorage(selectedImgUri)
+//            }
+//        }
 
-            // Upload the selected image to Firebase Storage
-            uploadImageToFirebaseStorage(selectedImgUri)
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            val selectedUri = data.data
 
-            // Upload the selected PDF file to Firebase Storage
-            uploadPdfToFirebaseStorage(selectedFileUri)
+            if (selectedUri != null) {
+                // Determine whether it's a PDF or an image based on the MIME type
+                val mimeType = contentResolver.getType(selectedUri)
+
+                if (mimeType != null) {
+                    if (mimeType == "application/pdf") {
+                        // Handle PDF
+                        selectedFileUri = selectedUri
+                        Log.d("debug", "Selected PDF: ${selectedFileUri.toString()}")
+                        uploadPdfToFirebaseStorage(selectedFileUri)
+                    } else if (mimeType.startsWith("image/")) {
+                        // Handle image
+                        selectedImgUri = selectedUri
+                        Log.d("debug", "Selected Image: ${selectedImgUri.toString()}")
+                        uploadImageToFirebaseStorage(selectedImgUri)
+                    } else {
+                        // Handle unknown file type or show an error message
+                        Toast.makeText(this, "Unsupported file type", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    // Handle case where MIME type is null
+                    Toast.makeText(this, "Unable to determine file type", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                // Handle case where selectedUri is null
+                Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -162,71 +238,3 @@ class upload_notes : AppCompatActivity() {
         }
     }
 }
-
-//    private fun displayPdf(fileUrl: String) {
-//        // Load and display the PDF using a PDF viewer library or WebView
-//        // For example, if you're using a WebView:
-//        val webView: WebView = findViewById(R.id.webView)
-//        webView.settings.javaScriptEnabled = true
-//        webView.loadUrl("https://docs.google.com/gview?embedded=true&url=$fileUrl")
-//    }
-
-
-//    private fun uploadPdfToFirebaseStorage(uri: Uri) {
-//        // Create a reference to the file you want to upload
-//        val fileRef = storageReference.child("uploads/${uri.lastPathSegment}")
-//
-//        try {
-//            // Put the file to Firebase Storage
-//            val uploadTask = fileRef.putFile(uri)
-//
-//            uploadTask.addOnSuccessListener { taskSnapshot ->
-//                // File uploaded successfully
-//                // Retrieve the download URL
-//                fileRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-//                    val fileUrl = downloadUrl.toString()
-//                    // Display the PDF file or handle it as needed
-//                }
-//            }.addOnFailureListener { exception ->
-//                // Handle errors if the upload fails
-//                exception.printStackTrace()
-//                // You can display an error message to the user here
-//            }
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
-//    }
-
-
-//Please ensure that you have the Firebase SDK set up correctly in your project, and the Firebase Storage rules are configured to allow read and write access. If the file is still not being uploaded, please double-check your Firebase setup and ensure that you have a working internet connection on your device.
-
-
-//        private fun displayPdf(fileUrl: String) {
-//            // Load and display the PDF using a PDF viewer library or WebView
-//            // For example, if you're using a WebView:
-//            val webView: WebView = findViewById(R.id.webView)
-//            webView.settings.javaScriptEnabled = true
-//            webView.loadUrl("https://docs.google.com/gview?embedded=true&url=$fileUrl")
-//        }private fun isStoragePermissionGranted(): Boolean {
-////        val readPermission = ContextCompat.checkSelfPermission(
-////            this,
-////            android.Manifest.permission.READ_EXTERNAL_STORAGE
-////        )
-////        val writePermission = ContextCompat.checkSelfPermission(
-////            this,
-////            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-////        )
-////        return readPermission == PackageManager.PERMISSION_GRANTED &&
-////                writePermission == PackageManager.PERMISSION_GRANTED
-////    }
-////
-////    private fun requestStoragePermission() {
-////        ActivityCompat.requestPermissions(
-////            this,
-////            arrayOf(
-////                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-////                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-////            ),
-////            STORAGE_PERMISSION_CODE
-////        )
-////    }

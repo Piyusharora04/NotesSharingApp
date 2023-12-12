@@ -26,4 +26,7 @@
 
     <color name="orange">#F7ED822C</color>
     <color name="pink1">#E60E57</color>
+
+    <color name="preHomeText">#0A7A8E</color>
+    <color name="preHomeText1">#1C889C</color>
 </resources>
